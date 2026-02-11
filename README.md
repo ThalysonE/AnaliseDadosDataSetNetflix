@@ -96,5 +96,4 @@ The analysis explores patterns, trends, and strategic insights about Netflix's c
 
 ---
 
-## 📁 Project Structure
 
