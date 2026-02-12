@@ -44,7 +44,18 @@ plt.yticks(range(0, 6000, 500))
 plt.tight_layout()
 # plt.show()
 
+
+
 #2.2 - Visualização da quantidade de lançamentos por ano
+
+#2.2.1 - Identificação de picos de crescimento(titulos adicionados por ano)
+titles_by_year = df.groupby("year_added").size().sort_index()
+diference = titles_by_year.diff()
+peak_year = diference.idxmax()
+peak_value = diference.max()
+print(f"O pico de crescimento ocorreu em {peak_year} com um aumento de {peak_value} títulos em relação ao ano anterior.")   
+
+#2.2.2 - Visualização do crescimento de títulos por ano
 novoDf2 = df["year_added"].groupby(df["year_added"]).size().sort_index().reset_index(name="count")
 
 novoDf2.plot(
@@ -62,9 +73,24 @@ plt.grid(True)
 plt.yticks(range(0, novoDf2["count"].max() +100, 100))
 plt.xticks(range(2005, 2025, 1), rotation=45, ha = 'right')
 plt.tight_layout()
+plt.axvline(peak_year, linestyle= "--")
 plt.show()
 
+#2.3 - Visualização da quantidade de títulos adicionados por mês
+titles_add_by_month = df.groupby("month_added").size().reset_index(name="count")
+titles_add_by_month["month_added"]= ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
-
+titles_add_by_month.plot(
+    x="month_added",
+    y="count",
+    kind="bar",
+    color= "purple",
+    legend=False,
+    title = "Quantidade de titulos adicionados por mes"
+)
+plt.xlabel("Mês de adição", fontsize= 12, fontweight= "bold")
+plt.ylabel("Quantidade de títulos adicionados", fontsize= 12, fontweight= "bold")
+plt.tight_layout()
+plt.show() 
 
 
