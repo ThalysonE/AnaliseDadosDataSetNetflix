@@ -3,7 +3,7 @@ import pandas
 import datetime
 import matplotlib.pyplot as plt
 #criando o dataframe
-df = pandas.read_csv("netflix_titles.csv")
+df = pandas.read_csv("netflix_titless.csv")
 
 # 1.1 - Limpeza e preparação dos dados
 df.dropna(subset=['title', 'date_added'], inplace=True) # removeno linha com valores NA
@@ -74,7 +74,7 @@ plt.yticks(range(0, novoDf2["count"].max() +100, 100))
 plt.xticks(range(2005, 2025, 1), rotation=45, ha = 'right')
 plt.tight_layout()
 plt.axvline(peak_year, linestyle= "--")
-plt.show()
+# plt.show()
 
 #2.3 - Visualização da quantidade de títulos adicionados por mês
 titles_add_by_month = df.groupby("month_added")["show_id"].nunique().reset_index(name="count")
@@ -91,7 +91,7 @@ titles_add_by_month.plot(
 plt.xlabel("Mês de adição", fontsize= 12, fontweight= "bold")
 plt.ylabel("Quantidade de títulos adicionados", fontsize= 12, fontweight= "bold")
 plt.tight_layout()
-plt.show() 
+# plt.show() 
 
 #2.4 - Top 10 países com mais títulos na Netflix
 titles_by_contry = df.groupby("country")["show_id"].nunique().reset_index(name="count").sort_values(by="count", ascending=False)
@@ -109,6 +109,19 @@ plt.xlabel("País", fontsize= 12, fontweight= "bold")
 plt.ylabel("Quantidade de títulos", fontsize=12, fontweight="bold")
 plt.xticks(rotation=45, ha="right")
 plt.tight_layout()
+# plt.show()
+
+
+types_by_Country = df.groupby(["country","type"])["show_id"].nunique().unstack().fillna(0)
+types_by_Country["total"]= types_by_Country.sum(axis=1)
+types_by_Country.sort_values(by="total", ascending=False).head(10).drop(columns="total").plot(
+    kind="bar",
+    title="Top 10 países com mais títulos na Netflix por tipo",
+    color=["orange", "blue"],
+)
+plt.xlabel("País", fontsize=12, fontweight="bold")
+plt.ylabel("Quantidade de títulos", fontsize=12, fontweight="bold")
+plt.xticks(rotation=45, ha="right")
+plt.legend(["Filmes", "Séries"], loc="upper right")
+plt.tight_layout()
 plt.show()
-
-
